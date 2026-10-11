@@ -1,0 +1,7 @@
+# Not needed on Vercel
+Replit App/
+.opencode/
+.tmp/
+docs/
+node_modules/
+*.log
