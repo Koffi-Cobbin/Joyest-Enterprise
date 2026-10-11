@@ -1,5 +1,6 @@
 import "server-only";
 import { timingSafeEqual } from "node:crypto";
+import { connection } from "next/server";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import {
@@ -35,6 +36,11 @@ export async function logoutAdmin(): Promise<void> {
  * and panel still calls this so a directly-invoked action can't slip through.
  */
 export async function requireAdmin(): Promise<void> {
+  // Auth reads the real visitor's cookie, so it must not be part of the
+  // prerendered static shell. connection() suspends here (the callers already
+  // wrap this in <Suspense>), which also keeps verifySessionToken's Date.now()
+  // expiry check out of the shell — see docs/messages/blocking-prerender-current-time.
+  await connection();
   const { verifySessionToken } = await import("@/lib/admin/session");
   const token = (await cookies()).get(COOKIE_NAME)?.value;
   if (!(await verifySessionToken(token))) redirect("/admin/login");

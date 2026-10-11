@@ -33,12 +33,12 @@ export function ProductForm({
   return (
     <form
       action={formAction}
-      className="flex max-w-2xl flex-col gap-5 rounded-xl border border-muted/20 bg-surface p-6"
+      className="flex min-w-0 max-w-2xl flex-col gap-5 rounded-xl border border-muted/20 bg-surface p-6"
     >
       {product ? <input type="hidden" name="originalId" value={product.id} /> : null}
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <div className="flex flex-col gap-1.5">
+      <div className="grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2">
+        <div className="flex min-w-0 flex-col gap-1.5">
           <label htmlFor="name" className={labelClass}>Name</label>
           <input
             id="name"
@@ -54,7 +54,7 @@ export function ProductForm({
             className={inputClass}
           />
         </div>
-        <div className="flex flex-col gap-1.5">
+        <div className="flex min-w-0 flex-col gap-1.5">
           <label htmlFor="id" className={labelClass}>Id / slug</label>
           <input
             id="id"
@@ -74,8 +74,8 @@ export function ProductForm({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <div className="flex flex-col gap-1.5">
+      <div className="grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-3">
+        <div className="flex min-w-0 flex-col gap-1.5">
           <label htmlFor="category" className={labelClass}>Category</label>
           <select
             id="category"
@@ -90,7 +90,7 @@ export function ProductForm({
             ))}
           </select>
         </div>
-        <div className="flex flex-col gap-1.5">
+        <div className="flex min-w-0 flex-col gap-1.5">
           <label htmlFor="price" className={labelClass}>Price (₵)</label>
           <input
             id="price"
@@ -103,7 +103,7 @@ export function ProductForm({
             className={inputClass}
           />
         </div>
-        <div className="flex flex-col gap-1.5">
+        <div className="flex min-w-0 flex-col gap-1.5">
           <label htmlFor="unit" className={labelClass}>Unit <span className="text-muted">(optional)</span></label>
           <input
             id="unit"
@@ -127,9 +127,9 @@ export function ProductForm({
         />
       </div>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor="badges" className={labelClass}>Badges <span className="text-muted">(comma-separated, optional)</span></label>
+      <div className="grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2">
+        <div className="flex min-w-0 flex-col gap-1.5">
+          <label htmlFor="badges" className={`${labelClass} break-words`}>Badges <span className="text-muted">(comma-separated, optional)</span></label>
           <input
             id="badges"
             name="badges"
@@ -150,31 +150,31 @@ export function ProductForm({
         </div>
       </div>
 
-      <fieldset className="flex flex-col gap-3 rounded-md border border-muted/20 p-4">
+      <fieldset className="flex min-w-0 flex-col gap-3 rounded-md border border-muted/20 p-4">
         <legend className="px-1 font-ui text-sm font-medium">Photo</legend>
         {product?.image ? (
-          <div className="flex items-center gap-3">
+          <div className="flex min-w-0 items-center gap-3">
             {/* eslint-disable-next-line @next/next/no-img-element -- external + local URLs, no next.config domains to maintain */}
             <img
               src={product.image}
               alt=""
-              className="h-16 w-16 rounded-md border border-muted/20 object-cover"
+              className="h-16 w-16 shrink-0 rounded-md border border-muted/20 object-cover"
             />
-            <p className={hintClass}>Current image — replace with a file below or edit the URL.</p>
+            <p className={`min-w-0 ${hintClass}`}>Current image — replace with a file below or edit the URL.</p>
           </div>
         ) : null}
         {previewUrl ? (
-          <div className="flex items-center gap-3">
+          <div className="flex min-w-0 items-center gap-3">
             {/* eslint-disable-next-line @next/next/no-img-element -- client-side object URL preview */}
             <img
               src={previewUrl}
               alt=""
-              className="h-16 w-16 rounded-md border border-primary/40 object-cover"
+              className="h-16 w-16 shrink-0 rounded-md border border-primary/40 object-cover"
             />
-            <p className={hintClass}>New image selected — saved when you submit.</p>
+            <p className={`min-w-0 ${hintClass}`}>New image selected — saved when you submit.</p>
           </div>
         ) : null}
-        <div className="flex flex-col gap-1.5">
+        <div className="flex min-w-0 flex-col gap-1.5">
           <label htmlFor="imageFile" className={labelClass}>Upload image <span className="text-muted">(JPEG/PNG/WebP/AVIF, max 5MB)</span></label>
           <input
             id="imageFile"
@@ -185,10 +185,10 @@ export function ProductForm({
               const file = e.target.files?.[0];
               setPreviewUrl(file ? URL.createObjectURL(file) : null);
             }}
-            className="font-ui text-sm file:mr-3 file:rounded-md file:border-0 file:bg-primary file:px-3 file:py-1.5 file:font-ui file:text-sm file:text-background"
+            className="w-full max-w-full min-w-0 font-ui text-sm file:mr-3 file:rounded-md file:border-0 file:bg-primary file:px-3 file:py-1.5 file:font-ui file:text-sm file:text-background"
           />
         </div>
-        <div className="flex flex-col gap-1.5">
+        <div className="flex min-w-0 flex-col gap-1.5">
           <label htmlFor="image" className={labelClass}>…or image URL / path</label>
           <input
             id="image"
@@ -212,7 +212,7 @@ export function ProductForm({
         />
       </div>
 
-      <fieldset className="flex flex-col gap-3 rounded-md border border-muted/20 p-4">
+      <fieldset className="flex min-w-0 flex-col gap-3 rounded-md border border-muted/20 p-4">
         <legend className="px-1 font-ui text-sm font-medium">Product page details <span className="text-muted">(optional)</span></legend>
         <div className="flex flex-col gap-1.5">
           <label htmlFor="ingredients" className={labelClass}>Ingredients</label>
@@ -244,7 +244,7 @@ export function ProductForm({
         </p>
       ) : null}
 
-      <div className="flex gap-3">
+      <div className="flex flex-wrap gap-3">
         <button
           type="submit"
           disabled={pending}
