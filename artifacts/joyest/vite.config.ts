@@ -29,6 +29,11 @@ if (!basePath) {
 
 export default defineConfig({
   base: basePath,
+  define: {
+    'import.meta.env.VITE_SUPABASE_URL': JSON.stringify(
+      process.env.SUPABASE_URL ?? '',
+    ),
+  },
   plugins: [
     react(),
     tailwindcss(),
@@ -70,7 +75,7 @@ export default defineConfig({
     host: '0.0.0.0',
     allowedHosts: true,
     fs: {
-      strict: true,
+      strict: false,
     },
   },
   preview: {

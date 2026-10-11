@@ -1,15 +1,18 @@
-# [Project name]
+# Joyest Enterprise
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+An imported Ghanaian storefront for nutritional foods, natural hair care, and aromatic spices.
 
 ## Run & Operate
 
-- `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
+- `pnpm --filter @workspace/api-server run dev` — run the API server
+- `pnpm --filter @workspace/joyest run typecheck` — check the Joyest web artifact
+- `pnpm --filter @workspace/api-server run typecheck` — check the API server
 - `pnpm run typecheck` — full typecheck across all packages
 - `pnpm run build` — typecheck + build all packages
 - `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
 - `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- Required env: `DATABASE_URL` — Postgres connection string
+- Required app secrets: `SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`
+- Optional app configuration: `ADMIN_NOTIFICATION_EMAIL`, `RESEND_FROM_EMAIL`, `WHATSAPP_NUMBER`
 
 ## Stack
 
@@ -22,23 +25,25 @@ _Replace the heading above with the project's name, and this line with one sente
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `artifacts/joyest/` — Vite storefront and imported brand assets
+- `artifacts/api-server/src/routes/joyest.ts` — migrated catalog, orders, contact, and admin APIs
+- `.migration-backup/` — untouched imported Vercel source, including its Supabase migration
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- Keep the existing Supabase backend; the API artifact talks to it directly instead of migrating its schema into the workspace database.
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+The source import contains a short home page and storefront shell. It also includes catalog, checkout, contact, and admin API routes; storefront subpages were not included in the import.
 
 ## User preferences
 
-_Populate as you build — explicit user instructions worth remembering across sessions._
+No additional preferences recorded.
 
 ## Gotchas
 
-_Populate as you build — sharp edges, "always run X before Y" rules._
+Configure the Supabase secrets before expecting live catalog, order, contact, or admin data.
 
 ## Pointers
 
