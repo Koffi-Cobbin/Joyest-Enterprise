@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { Suspense } from "react";
 import Reveal from "@/components/Reveal";
+import CategoryFilterStrip from "@/components/CategoryFilterStrip";
 import ShopCatalog from "@/components/ShopCatalog";
 import ProductGridSkeleton from "@/components/LoadingSkeleton";
 import type { CategoryId } from "@/data/categories";
@@ -15,13 +15,6 @@ export const metadata: Metadata = {
 };
 
 type SearchParams = Promise<{ category?: string }>;
-
-const tabClasses = (active: boolean): string =>
-  `rounded-full px-4 py-2 text-sm font-medium transition-colors min-h-11 inline-flex items-center ${
-    active
-      ? "bg-secondary text-background"
-      : "bg-surface text-foreground hover:text-primary"
-  }`;
 
 function ShopPageFallback() {
   return (
@@ -52,31 +45,19 @@ async function ShopContent({ searchParams }: { searchParams: SearchParams }) {
   return (
     <>
       <Reveal>
-        <div className="text-center">
-          <h1 className="font-serif text-4xl font-semibold text-secondary">
+        <div className="sm:text-center">
+          <h1 className="font-serif text-2xl font-semibold text-secondary sm:text-4xl">
             {activeCategoryName ?? "Shop"}
           </h1>
-          <p className="mx-auto mt-3 max-w-2xl text-muted">
+          <p className="mt-1.5 text-sm text-muted sm:mx-auto sm:mt-3 sm:max-w-2xl sm:text-base">
             {activeCategoryName
               ? `Browse our ${activeCategoryName.toLowerCase()} selection.`
               : "Browse everything we offer — nutritional foods, natural hair care, aromatic spices and more."}
           </p>
         </div>
 
-        <nav aria-label="Product categories" className="mt-8 flex flex-wrap justify-center gap-2">
-          <Link href="/shop" className={tabClasses(activeCategory === undefined)}>
-            All
-          </Link>
-          {categories.map((category) => (
-            <Link
-              key={category.id}
-              href={`/shop?category=${category.id}`}
-              className={tabClasses(activeCategory === category.id)}
-            >
-              {category.name}
-            </Link>
-          ))}
-        </nav>
+        {/* Phones: horizontal scroll strip (no wrap); sm+: wrapped centered pills */}
+        <CategoryFilterStrip categories={categories} activeCategory={activeCategory} />
       </Reveal>
 
       <ShopCatalog products={visibleProducts} />

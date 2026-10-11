@@ -23,9 +23,14 @@ export default function ShopCatalog({
     );
   }, [products, query]);
 
+  const countLabel = query.trim()
+    ? `${visible.length} ${visible.length === 1 ? "product" : "products"} match “${query.trim()}”`
+    : `Showing ${visible.length} ${visible.length === 1 ? "product" : "products"}`;
+
   return (
     <>
-      <div className="mt-8 flex justify-center">
+      {/* Search + live result count share one row on phones */}
+      <div className="mt-4 flex items-center gap-3 sm:mt-8 sm:justify-center">
         <div className="w-full max-w-md">
           <label htmlFor="shop-search" className="sr-only">
             Search products
@@ -39,16 +44,22 @@ export default function ShopCatalog({
             className="min-h-11 w-full rounded-full border border-foreground/10 bg-surface px-5 text-sm shadow-sm transition-colors placeholder:text-muted focus:border-primary focus:outline-2 focus:outline-primary/30"
           />
         </div>
+        <p
+          aria-live="polite"
+          role="status"
+          className="hidden shrink-0 text-sm text-muted sm:block sm:text-center"
+        >
+          {countLabel}
+        </p>
       </div>
 
-      <p aria-live="polite" className="mt-4 text-center text-sm text-muted" role="status">
-        {query.trim()
-          ? `${visible.length} ${visible.length === 1 ? "product" : "products"} match “${query.trim()}”`
-          : `Showing ${visible.length} ${visible.length === 1 ? "product" : "products"}`}
+      {/* Phones: count sits on its own tighter line under the search */}
+      <p aria-live="polite" role="status" className="mt-3 text-sm text-muted sm:hidden">
+        {countLabel}
       </p>
 
       {visible.length > 0 ? (
-        <ul className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="mt-4 grid gap-6 sm:mt-6 sm:grid-cols-2 lg:grid-cols-3">
           {visible.map((product) => (
             <li key={product.id}>
               <ProductCard product={product} />

@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 import HomeHero from "@/components/HomeHero";
 import HowItWorks from "@/components/HowItWorks";
 import ProductCard from "@/components/ProductCard";
 import Reveal from "@/components/Reveal";
+import { ProductCardSkeleton } from "@/components/LoadingSkeleton";
 import { business } from "@/data/business";
 import { getCategories, getFeaturedProducts } from "@/lib/catalog";
 import { buildWhatsAppUrl } from "@/lib/contact";
@@ -12,7 +14,33 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
 };
 
-export default async function Home() {
+/** Placeholder for the data-driven sections (categories + featured) while
+ *  the Supabase reads stream in behind the Suspense boundary. */
+function HomeCatalogSkeleton() {
+  return (
+    <div role="status" aria-live="polite">
+      <span className="sr-only">Loading categories and products…</span>
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 md:grid-cols-4" aria-hidden="true">
+        {Array.from({ length: 4 }, (_, index) => (
+          <div key={index} className="overflow-hidden rounded-xl bg-surface shadow-sm" aria-hidden="true">
+            <div className="animate-pulse aspect-[4/3] w-full bg-foreground/5" />
+            <div className="flex flex-col items-center gap-2 p-5">
+              <div className="animate-pulse h-4 w-2/3 rounded-md bg-foreground/5" />
+              <div className="animate-pulse h-3 w-full rounded-md bg-foreground/5" />
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3" aria-hidden="true">
+        {Array.from({ length: 3 }, (_, index) => (
+          <ProductCardSkeleton key={index} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+async function HomeCatalog() {
   const [categories, featured] = await Promise.all([
     getCategories(),
     getFeaturedProducts(),
@@ -20,8 +48,6 @@ export default async function Home() {
 
   return (
     <>
-      <HomeHero />
-
       <section aria-labelledby="categories-heading" className="mx-auto max-w-6xl px-4 py-16">
         <Reveal>
           <h2
@@ -60,7 +86,7 @@ export default async function Home() {
                       <span className="truncate text-[15px] font-semibold leading-snug transition-colors group-hover:text-primary sm:overflow-visible sm:whitespace-normal sm:text-base">
                         {category.name}
                       </span>
-                      <span className="line-clamp-1 text-xs text-muted sm:line-clamp-none sm:text-sm">
+                      <span className="text-xs text-muted sm:text-sm">
                         {category.description}
                       </span>
                     </span>
@@ -97,6 +123,20 @@ export default async function Home() {
           </Reveal>
         </div>
       </section>
+    </>
+  );
+}
+
+export default function Home() {
+  return (
+    <>
+      <HomeHero />
+
+      {/* Catalog reads hit Supabase; stream them behind Suspense so the static
+          shell (hero + copy) prerenders instantly per Cache Components. */}
+      <Suspense fallback={<HomeCatalogSkeleton />}>
+        <HomeCatalog />
+      </Suspense>
 
       <HowItWorks />
 

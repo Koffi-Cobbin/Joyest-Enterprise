@@ -46,6 +46,19 @@ html {
   transform: none;
 }
 
+/* Hide scrollbar while keeping the element scrollable (filter chip strip, etc.) */
+@utility no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  /* Reserve no gutter so classic (non-overlay) scrollbars collapse fully */
+  scrollbar-gutter: auto;
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+  }
+}
+
 /* Vertical micro-label motif (pair with font-ui utilities) */
 .vertical-label {
   writing-mode: vertical-rl;

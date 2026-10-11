@@ -38,7 +38,7 @@ export default function ProductCard({ product }: { product: Product }) {
           </Link>
         </h3>
         <p className="mt-1 line-clamp-2 text-sm text-muted">{product.description}</p>
-        <p className="pt-3 text-lg font-semibold text-primary">
+        <p className="pt-3 pb-4 text-lg font-semibold text-primary">
           {formatPrice(product.price, business.currency)}
           {product.unit ? (
             <span className="text-sm font-normal text-muted"> {product.unit}</span>
