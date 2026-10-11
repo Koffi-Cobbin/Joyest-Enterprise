@@ -6,9 +6,11 @@ import { deleteProductAction } from "@/app/admin/products/actions";
 export function DeleteProductButton({
   id,
   name,
+  fullWidth = false,
 }: {
   id: string;
   name: string;
+  fullWidth?: boolean;
 }) {
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -26,7 +28,7 @@ export function DeleteProductButton({
             formRef.current?.requestSubmit();
           }
         }}
-        className="font-ui text-xs text-muted transition-colors hover:text-clay"
+        className={`inline-flex min-h-11 items-center justify-center rounded-md border border-muted/30 px-4 font-ui text-xs text-muted transition-colors hover:text-clay ${fullWidth ? "w-full" : ""}`}
       >
         Delete
       </button>

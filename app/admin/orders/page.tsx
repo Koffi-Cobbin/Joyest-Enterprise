@@ -59,7 +59,7 @@ async function OrdersPanel({
             <Link
               key={f.value || "all"}
               href={f.value ? `/admin/orders?status=${f.value}` : "/admin/orders"}
-              className={`rounded-full px-3.5 py-1.5 font-ui text-sm transition-colors ${
+              className={`inline-flex min-h-11 items-center rounded-full px-4 font-ui text-sm transition-colors ${
                 active
                   ? "bg-primary text-background"
                   : "border border-muted/25 bg-surface text-muted hover:text-foreground"
@@ -73,7 +73,7 @@ async function OrdersPanel({
 
       {orders.length === 0 ? (
         <p className="rounded-xl border border-muted/20 bg-surface px-6 py-10 text-center font-ui text-sm text-muted">
-          No {validStatus ? validStatus : ""} orders found.
+          {validStatus ? `No ${validStatus} orders found.` : "No orders found."}
         </p>
       ) : (
         <ul className="flex flex-col gap-4">
@@ -151,7 +151,7 @@ function OrderCard({ order }: { order: AdminOrder }) {
               <input type="hidden" name="status" value={action.status} />
               <button
                 type="submit"
-                className={`rounded-md px-3.5 py-1.5 font-ui text-xs font-medium transition-colors ${
+                className={`inline-flex min-h-11 items-center rounded-md px-4 font-ui text-xs font-medium transition-colors sm:text-sm ${
                   action.status === "fulfilled" || action.status === "confirmed"
                     ? "bg-primary text-background hover:bg-primary-dark"
                     : "border border-muted/30 text-muted hover:text-foreground"
