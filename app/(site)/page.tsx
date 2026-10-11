@@ -30,13 +30,13 @@ export default async function Home() {
           >
             Shop by Category
           </h2>
-          <ul className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-4">
+          <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 md:grid-cols-4">
             {categories.map((category, index) => (
               <Reveal key={category.id} delay={index * 80}>
                 <li className="h-full">
                   <Link
                     href={`/shop?category=${category.id}`}
-                    className="group flex h-full flex-col overflow-hidden rounded-xl bg-surface shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
+                    className="group flex h-full flex-row items-stretch overflow-hidden rounded-xl bg-surface shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md sm:flex-col sm:items-center"
                   >
                     {category.image ? (
                       // Static /public photo; switch to next/image when optimization is configured
@@ -44,23 +44,25 @@ export default async function Home() {
                       <img
                         src={category.image}
                         alt=""
-                        className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                        className="aspect-square w-24 shrink-0 object-cover transition-transform duration-500 group-hover:scale-[1.04] sm:aspect-[4/3] sm:w-full"
                       />
                     ) : (
                       <span
                         aria-hidden="true"
-                        className="flex aspect-[4/3] w-full items-center justify-center bg-gradient-to-br from-background via-accent/20 to-primary/15"
+                        className="flex aspect-square w-24 shrink-0 items-center justify-center bg-gradient-to-br from-background via-accent/20 to-primary/15 sm:aspect-[4/3] sm:w-full"
                       >
                         <span className="font-ui text-[10px] font-semibold uppercase tracking-[0.25em] text-muted">
                           Joyest
                         </span>
                       </span>
                     )}
-                    <span className="flex flex-1 flex-col items-center gap-1 p-5 text-center">
-                      <span className="font-semibold transition-colors group-hover:text-primary">
+                    <span className="flex min-w-0 flex-1 flex-col justify-center gap-0.5 p-3 text-left sm:flex-none sm:items-center sm:gap-1 sm:p-5 sm:text-center">
+                      <span className="truncate text-[15px] font-semibold leading-snug transition-colors group-hover:text-primary sm:overflow-visible sm:whitespace-normal sm:text-base">
                         {category.name}
                       </span>
-                      <span className="text-sm text-muted">{category.description}</span>
+                      <span className="line-clamp-1 text-xs text-muted sm:line-clamp-none sm:text-sm">
+                        {category.description}
+                      </span>
                     </span>
                   </Link>
                 </li>

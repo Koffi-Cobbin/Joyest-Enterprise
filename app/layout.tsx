@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { DM_Sans, Manrope, Newsreader } from "next/font/google";
+import ScrollToTop from "@/components/ScrollToTop";
 import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
@@ -63,6 +64,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${dmSans.variable} ${newsreader.variable} ${manrope.variable} h-full antialiased`}
     >
       <body className="grain flex min-h-full flex-col">
+        <ScrollToTop />
         {children}
       </body>
     </html>

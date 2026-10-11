@@ -7,6 +7,11 @@ import { getProductAdmin, listCategoriesAdmin } from "@/lib/admin/data";
 
 export const metadata: Metadata = { title: "Edit product" };
 
+// Dynamic admin route without generateStaticParams — the root layout's
+// ScrollToTop (usePathname) can't be part of a static shell here, so this
+// segment is allowed to block instead of prerendering.
+export const instant = false;
+
 export default function EditProductPage({
   params,
 }: {
