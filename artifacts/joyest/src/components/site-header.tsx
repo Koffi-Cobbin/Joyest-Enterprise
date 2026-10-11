@@ -1,42 +1,35 @@
 "use client";
 
 import { useState } from "react";
-import { Menu, ShoppingBag, X } from "lucide-react";
-import { useCart } from "@/lib/cart-context";
+import { Menu, X } from "lucide-react";
 
 const links = [
-  { href: "/shop", label: "Shop" },
-  { href: "/bundles", label: "Bundles" },
-  { href: "/recipes", label: "Kitchen notes" },
-  { href: "/gallery", label: "Journal" },
-  { href: "/about", label: "Our approach" }
+  { href: "/#everyday", label: "Everyday", id: "everyday" },
+  { href: "/#our-way", label: "Our approach", id: "approach" },
+  { href: "/#rituals", label: "Daily rituals", id: "rituals" },
+  { href: "/#our-promise", label: "What we believe", id: "belief" }
 ];
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
-  const { itemCount } = useCart();
   return (
     <header className="site-header">
-      <a href="/" className="brand" aria-label="Joyest Enterprise home">
+      <a href="/" className="brand" aria-label="Joyest Enterprise home" data-testid="link-brand-home">
         <span className="brand-mark" aria-hidden="true">j</span>
         <span className="brand-copy"><strong>joyest</strong><small>ENTERPRISE</small></span>
       </a>
       <nav className="desktop-nav" aria-label="Main navigation">
-        {links.map((link) => <a key={link.href} href={link.href}>{link.label}</a>)}
+        {links.map((link) => <a key={link.id} href={link.href} data-testid={`link-desktop-${link.id}`}>{link.label}</a>)}
       </nav>
       <div className="header-actions">
-        <a href="/contact" className="header-contact">Let's talk <span aria-hidden="true">↗</span></a>
-        <a href="/cart" className="bag-link" aria-label={`Shopping bag, ${itemCount} items`}>
-          <ShoppingBag size={19} strokeWidth={1.7} /><span>Bag</span>
-          {itemCount > 0 && <b className="bag-count">{itemCount}</b>}
-        </a>
-        <button className="menu-toggle" onClick={() => setOpen(!open)} aria-expanded={open} aria-label={open ? "Close menu" : "Open menu"}>
+        <a href="/#our-promise" className="header-contact" data-testid="link-header-belief">Our belief <span aria-hidden="true">↗</span></a>
+        <button className="menu-toggle" onClick={() => setOpen(!open)} aria-expanded={open} aria-controls={open ? "mobile-navigation" : undefined} aria-label={open ? "Close menu" : "Open menu"} data-testid="button-toggle-navigation">
           {open ? <X size={21} /> : <Menu size={21} />}
         </button>
       </div>
-      {open && <nav className="mobile-menu" aria-label="Mobile navigation">
-        {links.map((link) => <a key={link.href} href={link.href} onClick={() => setOpen(false)}>{link.label}<span>↗</span></a>)}
-        <a href="/contact" onClick={() => setOpen(false)}>Get in touch<span>↗</span></a>
+      {open && <nav id="mobile-navigation" className="mobile-menu" aria-label="Mobile navigation">
+        {links.map((link) => <a key={link.id} href={link.href} onClick={() => setOpen(false)} data-testid={`link-mobile-${link.id}`}>{link.label}<span>↗</span></a>)}
+        <a href="/#our-promise" onClick={() => setOpen(false)} data-testid="link-mobile-belief">What we believe<span>↗</span></a>
       </nav>}
     </header>
   );
